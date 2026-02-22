@@ -17,7 +17,7 @@ body {
     /* Cập nhật ảnh nền */
     background-image: url('images/curtain.png');
     background-size: cover;
-    background-position: center;
+    background-position: center bottom;
     background-repeat: no-repeat;
     font-family: 'Noto Serif JP', serif;
     overflow-x: hidden;
