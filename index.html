@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chúc Mừng Năm Mới - Lì Xì May Mắn</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Noto+Serif+JP:wght@700&family=Patrick+Hand&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Decorative Elements (Fixed Position) -->
+    <div class="decor-layer">
+        <!-- Thay thế bằng ảnh thật trong thư mục images -->
+        <img src="images/lantern.png" alt="Lantern" class="decor lantern left-lantern">
+        <img src="images/lantern.png" alt="Lantern" class="decor lantern right-lantern">
+        
+        <img src="images/liondance.png" alt="Lion Dance" class="decor lion left-lion">
+        <img src="images/liondance.png" alt="Lion Dance" class="decor lion right-lion">
+    </div>
+
+    <div class="container">
+        <!-- Top Diamond Banners -->
+        <header class="banner-section">
+            <div class="diamond-banner delay-1"><span>Vạn</span></div>
+            <div class="diamond-banner delay-2"><span>Sự</span></div>
+            <div class="diamond-banner delay-3"><span>Như</span></div>
+            <div class="diamond-banner delay-4"><span>Ý</span></div>
+        </header>
+
+        <!-- Main Carousel Section -->
+        <main class="carousel-section">
+            <div class="carousel-wrapper drag-scroll" id="carousel"></div>
+        </main>
+    </div>
+
+    <!-- Popup Modal -->
+    <div id="lixiModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <div class="modal-layout">
+                <div class="modal-column left-col">
+                    <div class="greeting-cover">
+                        <h1>Happy New Year<br>2025</h1>
+                        <div class="gold-decor-circle"></div>
+                    </div>
+                </div>
+                <div class="modal-column right-col">
+                    <h2>Lì xì nè!</h2>
+                    <p class="wish-text" id="modal-wish">
+                        <!-- Lời chúc sẽ hiện ở đây -->
+                    </p>
+                    <div class="lucky-money">
+                        <img id="modal-money-img" src="" alt="Lucky Money Bill" class="money-img">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

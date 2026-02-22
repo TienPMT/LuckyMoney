@@ -1,0 +1,432 @@
+:root {
+    --bg-cream: #fff9c4;
+    --tet-red: #d32f2f;
+    --tet-gold: #ffb300;
+    --tet-dark-red: #b71c1c;
+    --text-color: #3e2723;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-cream);
+    /* Cập nhật ảnh nền */
+    background-image: url('images/curtain.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    font-family: 'Noto Serif JP', serif;
+    overflow-x: hidden;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color);
+}
+
+/* --- Decorative Elements --- */
+.decor-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.decor {
+    position: absolute;
+    /* Hiệu ứng bóng đổ nhẹ cho ảnh thật trông nổi hơn */
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+}
+
+.lantern {
+    /* Đã tăng kích thước lên khoảng 200px */
+    width: 200px; 
+    top: -20px; /* Đẩy lên 1 chút để không che nội dung */
+    transform-origin: top center;
+    animation: swing 4s ease-in-out infinite alternate;
+}
+
+.left-lantern { left: -30px; }
+.right-lantern { right: -30px; animation-delay: 0.5s; }
+
+.lion {
+    /* Đã tăng kích thước lên khoảng 250px */
+    width: 250px;
+    bottom: -30px;
+    animation: bounce 3s ease-in-out infinite;
+}
+
+.left-lion { left: -30px; }
+.right-lion { right: -30px; animation-delay: 1s; }
+
+/* Animations */
+@keyframes swing {
+    0% { transform: rotate(5deg); }
+    100% { transform: rotate(-5deg); }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+/* --- Container & Banners --- */
+.container {
+    width: 100%;
+    max-width: 900px; /* Tăng chiều rộng container */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5vh;
+    position: relative;
+    z-index: 5;
+}
+
+.banner-section {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 5vh;
+}
+
+.diamond-banner {
+    width: 80px; /* Tăng kích thước banner một chút */
+    height: 80px;
+    background-color: var(--tet-red);
+    border: 3px solid var(--tet-gold);
+    transform: rotate(45deg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 5px 15px rgba(211, 47, 47, 0.4);
+    animation: swing 4s ease-in-out infinite alternate;
+    transform-origin: top center;
+}
+
+.diamond-banner span {
+    transform: rotate(-45deg);
+    color: var(--tet-gold);
+    font-weight: bold;
+    font-size: 1.8rem;
+    font-family: 'Dancing Script', cursive;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+}
+
+.delay-1 { animation-delay: 0s; }
+.delay-2 { animation-delay: 0.3s; }
+.delay-3 { animation-delay: 0.6s; }
+.delay-4 { animation-delay: 0.9s; }
+
+/* --- Carousel --- */
+.carousel-section {
+    width: 100%;
+    text-align: center;
+    /* Thêm padding top để tránh bị banner che mất */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.carousel-wrapper {
+    display: flex;
+    gap: 30px;
+    overflow-x: auto;
+    padding: 20px 40px;
+    
+    /* Ẩn thanh cuộn nhưng vẫn scroll được */
+    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    
+    /* Thay đổi con trỏ chuột khi lướt qua */
+    cursor: grab;
+    
+    /* Căn giữa khi ít phần tử */
+    justify-content: flex-start;
+}
+
+@media (min-width: 768px) {
+    .carousel-wrapper {
+        justify-content: center; /* Vẫn căn giữa trên PC */
+    }
+}
+
+/* Ẩn thanh cuộn trên Chrome/Safari/Opera */
+.carousel-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-wrapper.active {
+    cursor: grabbing;
+    scale: 1.01; /* Hiệu ứng scale nhẹ khi đang nắm kéo */
+}
+
+.envelope-card {
+    flex: 0 0 auto;
+    width: 220px; /* To hơn chút */
+    height: 330px;
+    /* Xóa scroll-snap để kéo mượt hơn */
+    /* scroll-snap-align: center; */ 
+    perspective: 1000px;
+    transition: transform 0.3s;
+    user-select: none; /* Không cho bôi đen text khi kéo */
+}
+
+.envelope-card:hover {
+    transform: translateY(-15px) scale(1.05);
+}
+
+/* Envelope Styling */
+.envelope-body {
+    width: 100%;
+    height: 100%;
+    background-color: var(--tet-red);
+    border-radius: 12px;
+    position: relative;
+    border: 2px solid var(--tet-gold);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 40px;
+    overflow: hidden;
+}
+
+.envelope-body.image-mode {
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    overflow: visible; /* Allow button to pop out if needed, though we fit inside */
+}
+
+.envelope-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Ensure the whole envelope is visible */
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+    transition: transform 0.3s;
+}
+
+/* Adjust button position for image mode */
+.envelope-body.image-mode .open-btn {
+    position: absolute;
+    bottom: 40px; /* Adjust based on where button looks good on image */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    white-space: nowrap;
+}
+
+.envelope-body.image-mode:hover .envelope-img {
+    /* Optional: extra effect for image on hover */
+}
+
+
+.open-btn {
+    background-color: var(--tet-gold);
+    color: var(--tet-red);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: 'Patrick Hand', cursive;
+    font-size: 1.3rem;
+    box-shadow: 0 4px 0 #b27d00;
+    transition: all 0.1s;
+}
+
+.open-btn:active {
+    transform: translateY(4px);
+    box-shadow: none;
+}
+
+.scroll-hint {
+    margin-top: 15px;
+    font-size: 1rem;
+    color: #5d4037; /* Màu đậm hơn để dễ nhìn trên nền mới */
+    font-weight: bold;
+    text-shadow: 0 0 5px white;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+/* --- Modal --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 100;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background: white;
+    width: 100%;
+    max-width: 750px;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 2.5rem;
+    color: var(--text-color);
+    cursor: pointer;
+    z-index: 50;
+    line-height: 1;
+}
+
+.modal-layout {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.modal-column.left-col {
+    background-color: var(--tet-red);
+    color: var(--tet-gold);
+    flex: 1 1 300px; 
+    padding: 50px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-right: 5px solid var(--tet-gold);
+    position: relative;
+}
+
+.greeting-cover h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3.5rem;
+    line-height: 1.2;
+    z-index: 2;
+    position: relative;
+}
+
+.gold-decor-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 220px;
+    height: 220px;
+    border: 3px dashed rgba(255, 193, 7, 0.4);
+    border-radius: 50%;
+}
+
+.modal-column.right-col {
+    background-color: #fffde7;
+    flex: 1.5 1 300px;
+    padding: 50px 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+}
+
+.right-col h2 {
+    color: var(--tet-red);
+    font-family: 'Dancing Script', cursive;
+    font-size: 3rem;
+}
+
+.wish-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    max-width: 90%;
+}
+
+.money-img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transform: rotate(-2deg);
+}
+
+.small-decors {
+    font-size: 2.5rem;
+    display: flex;
+    gap: 25px;
+    margin-top: 10px;
+}
+
+/* --- Responsive Update --- */
+@media (max-width: 600px) {
+    .container {
+        padding-top: 10px;
+    }
+    .diamond-banner {
+        width: 55px; /* Giữ banner nhỏ gọn trên mobile */
+        height: 55px;
+    }
+    .diamond-banner span {
+        font-size: 1.2rem;
+    }
+    .carousel-section {
+        margin-top: 20px;
+    }
+    .envelope-card { /* Giữ kích thước bao lì xì vừa phải trên mobile */
+        width: 180px;
+        height: 280px; 
+    }
+    
+    /* Hình trang trí mobile */
+    .lantern { width: 120px; }
+    .lion { width: 150px; }
+    .left-lantern { left: -20px; top: -10px; }
+    .right-lantern { right: -20px; top: -10px; }
+    .lion { bottom: -20px; }
+    .left-lion { left: -10px; }
+    .right-lion { right: -10px; }
+}
+
+/* --- JS Dynamic Classes --- */
+.open-btn.disabled {
+    background-color: #bdbdbd !important;
+    color: #424242 !important;
+    cursor: not-allowed;
+    box-shadow: none !important;
+    transform: none !important;
+    pointer-events: none;
+}
