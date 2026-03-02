@@ -392,33 +392,116 @@ body {
 }
 
 /* --- Responsive Update --- */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .container {
-        padding-top: 10px;
+        padding-top: 0;
+        height: 100vh; /* Giữ full màn hình để căn giữa dọc */
+        min-height: 500px; /* Tránh bị co quá nhỏ trên màn ngang */
+        justify-content: center; /* Căn giữa dọc nội dung */
+        overflow: hidden; /* Ẩn thanh cuộn của container chính */
+    }
+    .banner-section {
+        margin-bottom: 10px; /* Giảm khoảng cách banner với lì xì */
+        gap: 8px;
+        flex-shrink: 0; /* Không cho banner bị co lại */
     }
     .diamond-banner {
-        width: 55px; /* Giữ banner nhỏ gọn trên mobile */
-        height: 55px;
+        width: 45px; 
+        height: 45px;
     }
     .diamond-banner span {
-        font-size: 1.2rem;
+        font-size: 1rem;
     }
     .carousel-section {
-        margin-top: 20px;
+        margin-top: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex: 1; /* Chiếm phần không gian còn lại để đẩy các phần tử khác ra xa */
+        max-height: 60vh; /* Giới hạn chiều cao khu vực lì xì */
     }
-    .envelope-card { /* Giữ kích thước bao lì xì vừa phải trên mobile */
-        width: 180px;
-        height: 280px; 
+    .carousel-wrapper {
+        padding: 10px 0;
+        gap: 15px;
+        width: 100%;
+        justify-content: flex-start; /* Để scroll ngang hoạt động tốt từ lề trái */
+    }
+    /* Pseudo-element để căn giữa scroll snap items khi danh sách ngắn, 
+       nhưng ở đây ta dùng JS scroll drag nên chỉ cần padding trái phải */
+    .carousel-wrapper::before,
+    .carousel-wrapper::after {
+        content: '';
+        flex: 0 0 50vw; /* Tạo khoảng trống 2 bên để bao lì xì đầu tiên nằm giữa */
+        width: 50vw;
+        max-width: 150px; /* Giới hạn khoảng trống */
+    }
+    .carousel-wrapper::after {
+        content: '';
+        flex: 0 0 20px; /* Padding phải nhỏ hơn */
+    }
+
+    .envelope-card { 
+        width: 200px; /* Tăng kích thước bao lì xì to ra một tí cho rõ */
+        height: 300px; 
+        flex-shrink: 0;
     }
     
-    /* Hình trang trí mobile */
-    .lantern { width: 120px; }
-    .lion { width: 150px; }
-    .left-lantern { left: -20px; top: -10px; }
-    .right-lantern { right: -20px; top: -10px; }
-    .lion { bottom: -20px; }
+    /* Hình trang trí mobile - Tinh chỉnh vị trí để không che nội dung */
+    .decor-layer {
+        z-index: 1; /* Thấp hơn nội dung */
+    }
+    .lantern { 
+        width: 70px; 
+        top: 10px;
+    }
+    .left-lantern { left: -10px; }
+    .right-lantern { right: -10px; }
+
+    .lion { 
+        width: 100px; /* Thu nhỏ lân */
+        bottom: 0px;
+        /* Giảm độ nảy để đỡ rối mắt */
+        animation: none; 
+    }
     .left-lion { left: -10px; }
     .right-lion { right: -10px; }
+
+    /* Modal Responsive */
+    .modal-content {
+        width: 90%;
+        max-height: 90vh; /* Giới hạn chiều cao */
+        overflow-y: auto; /* Cho phép cuộn trong modal */
+    }
+    .modal-column.left-col {
+        padding: 20px;
+        flex: 1 1 100%; /* Chiếm hết chiều ngang */
+        border-right: none;
+        border-bottom: 5px solid var(--tet-gold);
+    }
+    .greeting-cover h1 {
+        font-size: 2.5rem;
+    }
+    .gold-decor-circle {
+        width: 150px;
+        height: 150px;
+    }
+    .modal-column.right-col {
+        padding: 20px;
+        flex: 1 1 100%;
+    }
+    .right-col h2 {
+        font-size: 2rem;
+    }
+    .wish-text {
+        font-size: 1rem;
+    }
+    
+    /* Ẩn bớt rèm trên mobile cho đỡ chật */
+    .curtain-decor {
+        display: none;
+    }
 }
 
 /* --- JS Dynamic Classes --- */

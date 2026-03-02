@@ -28,7 +28,7 @@ const luckyMoneyAmounts = [
 ];
 
 // Số lượng bao lì xì
-const TOTAL_ENVELOPES = 50;
+const TOTAL_ENVELOPES = 10;
 
 // Khởi tạo ứng dụng
 document.addEventListener('DOMContentLoaded', () => {
@@ -50,18 +50,19 @@ function initApp() {
     envelopes.forEach(env => {
         const card = document.createElement('div');
         card.className = 'envelope-card';
-        // Kiểm tra trạng thái đã mở chưa
-        const isOpened = localStorage.getItem(`envelope_${env.id}`);
+        
+        // Trạng thái ban đầu luôn là chưa mở (Xóa logic localStorage cũ)
+        const isOpened = false; 
         
         // Nút mở lì xì
-        const btnText = isOpened ? "Đã mở" : "Mở lì xì đi";
-        const btnClass = isOpened ? "open-btn disabled" : "open-btn";
-        const btnDisabled = isOpened ? "disabled" : "";
+        const btnText = "Mở lì xì đi";
+        const btnClass = "open-btn";
+        const btnDisabled = "";
 
         card.innerHTML = `
             <div class="envelope-body image-mode">
                 <img src="${env.bgImage}" alt="Lì xì" class="envelope-img">
-                <button class="${btnClass}" ${btnDisabled} onclick="handleOpenEnvelope(${env.id}, '${env.amount}', '${env.moneyImg}', '${env.wish}')">
+                <button class="${btnClass}" ${btnDisabled} onclick="handleOpenEnvelope(this, '${env.amount}', '${env.moneyImg}', '${env.wish}')">
                     ${btnText}
                 </button>
             </div>
@@ -71,17 +72,45 @@ function initApp() {
 }
 
 function generateEnvelopes(count) {
+    // 1. Tạo pool tiền theo tỉ lệ cố định cho 10 bao
+    // 1x50k, 1x20k, 1x10k, 2x5k, 2x2k, 3x1k
+    let moneyPool = [
+        luckyMoneyAmounts.find(m => m.value === "50,000"),
+        luckyMoneyAmounts.find(m => m.value === "20,000"),
+        luckyMoneyAmounts.find(m => m.value === "10,000"),
+        luckyMoneyAmounts.find(m => m.value === "5,000"),
+        luckyMoneyAmounts.find(m => m.value === "5,000"),
+        luckyMoneyAmounts.find(m => m.value === "2,000"),
+        luckyMoneyAmounts.find(m => m.value === "2,000"),
+        luckyMoneyAmounts.find(m => m.value === "1,000"),
+        luckyMoneyAmounts.find(m => m.value === "1,000"),
+        luckyMoneyAmounts.find(m => m.value === "1,000")
+    ];
+
+    // Nếu số lượng bao yêu cầu khác 10 thì tự động lấp đầy bằng random hoặc cắt bớt
+    if (count > 10) {
+        for(let k=10; k<count; k++) {
+            moneyPool.push(luckyMoneyAmounts[Math.floor(Math.random() * luckyMoneyAmounts.length)]);
+        }
+    } else if (count < 10) {
+        moneyPool = moneyPool.slice(0, count);
+    }
+
+    // Xáo trộn danh sách tiền này trước khi gán
+    moneyPool = shuffleArray(moneyPool);
+
     const list = [];
     for (let i = 1; i <= count; i++) {
         const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
-        const randomMoney = luckyMoneyAmounts[Math.floor(Math.random() * luckyMoneyAmounts.length)];
+        // Lấy tiền từ pool đã tạo (đảm bảo đúng tỉ lệ)
+        const assignedMoney = moneyPool[i-1]; 
         const randomBg = envelopeImages[Math.floor(Math.random() * envelopeImages.length)];
         
         list.push({
             id: i, // ID cố định để track trạng thái
             wish: randomWish,
-            amount: randomMoney.value,
-            moneyImg: randomMoney.image,
+            amount: assignedMoney.value,
+            moneyImg: assignedMoney.image,
             bgImage: randomBg
         });
     }
@@ -98,27 +127,18 @@ function shuffleArray(array) {
 }
 
 // Xử lý khi bấm nút mở
-window.handleOpenEnvelope = function(id, amount, moneyImg, wish) {
-    // Lưu vào localStorage
-    localStorage.setItem(`envelope_${id}`, "opened");
+window.handleOpenEnvelope = function(btnElement, amount, moneyImg, wish) {
+    // Không cần lưu localStorage nữa để reset mỗi lần load
+    
+    // Disable nút vừa bấm ngay lập tức trên UI (để không mở lại trong phiên này)
+    btnElement.innerText = "Đã mở";
+    btnElement.classList.add('disabled');
+    btnElement.disabled = true;
 
     // Hiển thị nội dung lên Modal
     document.getElementById('modal-wish').innerText = wish;
     document.getElementById('modal-money-img').src = moneyImg;
     
-    // Disable nút vừa bấm ngay lập tức trên UI (để không cần reload)
-    // Tìm button trong DOM dựa trên onclick text hoặc id (ở đây đơn giản là reload lại button text cũng được, hoặc query selector phức tạp hơn)
-    // Tuy nhiên, vì danh sách đã shuffle, ta cần tìm đúng nút.
-    // Cách đơn giản: Sau khi đóng modal, ta có thể để nguyên hoặc reload UI. 
-    // Nhưng tốt nhất là cập nhật visual ngay.
-    const allButtons = document.querySelectorAll('.open-btn');
-    // Ở đây ta dùng cách đơn giản là disable nút đang được focus (nút vừa bấm)
-    if(document.activeElement && document.activeElement.classList.contains('open-btn')) {
-        document.activeElement.innerText = "Đã mở";
-        document.activeElement.classList.add('disabled');
-        document.activeElement.disabled = true;
-    }
-
     openModal();
 }
 
