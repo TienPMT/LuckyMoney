@@ -145,8 +145,10 @@ window.handleOpenEnvelope = function(btnElement, amount, moneyImg, wish) {
 // --- Modal Logic ---
 const modal = document.getElementById('lixiModal');
 window.openModal = function() { modal.classList.add('active'); }
-window.closeModal = function() { modal.classList.remove('active'); }
-window.onclick = function(event) { if (event.target == modal) closeModal(); }
+
+// Đã tắt chức năng đóng modal để bắt buộc người dùng chỉ mở 1 lần
+// window.closeModal = function() { modal.classList.remove('active'); }
+// window.onclick = function(event) { if (event.target == modal) closeModal(); }
 
 // --- Drag Scroll Logic ---
 function setupDragScroll() {
