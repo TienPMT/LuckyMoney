@@ -40,7 +40,7 @@ function initApp() {
     const carouselWrapper = document.getElementById('carousel');
     carouselWrapper.innerHTML = ''; // Xóa nội dung cũ
 
-    // 1. Tạo danh sách 50 bao lì xì
+    // 1. Tạo danh sách bao lì xì
     let envelopes = generateEnvelopes(TOTAL_ENVELOPES);
 
     // 2. Random thứ tự mỗi lần reload
